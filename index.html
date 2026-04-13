@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Samiksha 💖</title>
+
+<style>
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Segoe UI';
+  background: black;
+  color: white;
+}
+
+/* SCREEN */
+.screen {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* PASSWORD PORTAL */
+#login {
+  background: radial-gradient(circle, #000, #1a1a2f);
+  text-align: center;
+}
+
+#login h1 {
+  font-size: 9vw;
+  animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+  from {text-shadow: 0 0 10px pink;}
+  to {text-shadow: 0 0 30px cyan;}
+}
+
+input {
+  padding: 14px;
+  border-radius: 25px;
+  border: none;
+  text-align: center;
+  width: 70%;
+}
+
+button {
+  padding: 14px 25px;
+  border-radius: 30px;
+  border: none;
+  background: linear-gradient(45deg, pink, cyan);
+  color: white;
+  margin-top: 15px;
+}
+
+/* FLASH */
+.flash {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: white;
+  opacity: 0;
+  animation: flash 0.4s;
+}
+
+@keyframes flash {
+  0% {opacity:1;}
+  100% {opacity:0;}
+}
+
+/* SHAKE */
+.shake {
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0% {transform: translateX(0);}
+  25% {transform: translateX(10px);}
+  50% {transform: translateX(-10px);}
+  75% {transform: translateX(5px);}
+  100% {transform: translateX(0);}
+}
+
+/* EXPLOSION */
+.boom {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: pink;
+  border-radius: 50%;
+  animation: explode 0.8s forwards;
+}
+
+@keyframes explode {
+  to {
+    transform: scale(20);
+    opacity: 0;
+  }
+}
+
+/* COUNT */
+#count {
+  font-size: 20vw;
+  animation: zoom 1s infinite alternate;
+}
+
+@keyframes zoom {
+  from {transform: scale(1);}
+  to {transform: scale(1.2);}
+}
+
+/* PHOTO */
+#photo {
+  width: 70vw;
+  height: 70vw;
+  border-radius: 20px;
+  object-fit: cover;
+  box-shadow: 0 0 25px pink;
+}
+
+/* TEXT */
+p {
+  font-size: 4.5vw;
+  padding: 10px;
+}
+
+</style>
+</head>
+
+<body onclick="startMusic()">
+
+<!-- LOGIN -->
+<div id="login" class="screen">
+  <h1>🔐 SECRET ACCESS</h1>
+  <p>Only for the special one 💖</p>
+  <input type="password" id="pass">
+  <button onclick="check()">Unlock ✨</button>
+  <p id="error" style="color:red;"></p>
+</div>
+
+<!-- COUNT -->
+<div id="countScreen" class="screen" style="display:none;">
+  <h1 id="count">5</h1>
+</div>
+
+<!-- MAIN -->
+<div id="main" class="screen" style="display:none;">
+  <h1>Happy Birthday Samiksha 💖</h1>
+  <img id="photo" src="photo1.jpg">
+  <button onclick="startStory()">Open Slowly ✨</button>
+  <div id="msg"></div>
+</div>
+
+<!-- PROPOSAL -->
+<div id="proposal" class="screen" style="display:none;">
+  <p id="proposalText"></p>
+  <h1>Do you love me too? 💌</h1>
+  <button onclick="goFinal()">Yes 💖</button>
+</div>
+
+<!-- FINAL -->
+<div id="final" class="screen" style="display:none;">
+  <p id="finalText"></p>
+</div>
+
+<!-- AUDIO -->
+<audio id="music"><source src="dorron.mp3"></audio>
+<audio id="boom"><source src="boom.mp3"></audio>
+
+<script>
+
+/* MUSIC */
+let started=false;
+function startMusic(){
+  if(!started){
+    document.getElementById("music").play().catch(()=>{});
+    started=true;
+  }
+}
+
+/* INSANE UNLOCK */
+function check(){
+  let p=document.getElementById("pass").value.toLowerCase().trim();
+
+  if(p==="angry bird"){
+
+    document.getElementById("boom").play();
+
+    // FLASH
+    let flash=document.createElement("div");
+    flash.className="flash";
+    document.body.appendChild(flash);
+    setTimeout(()=>flash.remove(),400);
+
+    // SHAKE
+    document.body.classList.add("shake");
+    setTimeout(()=>document.body.classList.remove("shake"),500);
+
+    // EXPLOSION PARTICLES
+    for(let i=0;i<25;i++){
+      let b=document.createElement("div");
+      b.className="boom";
+      b.style.left=Math.random()*100+"vw";
+      b.style.top=Math.random()*100+"vh";
+      document.body.appendChild(b);
+      setTimeout(()=>b.remove(),800);
+    }
+
+    // ACCESS GRANTED TEXT
+    document.getElementById("login").innerHTML="<h1>ACCESS GRANTED 💖</h1>";
+
+    setTimeout(()=>{
+      document.getElementById("login").style.display="none";
+      document.getElementById("countScreen").style.display="flex";
+      startCountdown();
+    },1200);
+
+  } else {
+    document.getElementById("error").innerText="Wrong 😏";
+  }
+}
+
+/* COUNTDOWN */
+let c=5;
+function startCountdown(){
+  let x=setInterval(()=>{
+    c--;
+    document.getElementById("count").innerText=c;
+    if(c===0){
+      clearInterval(x);
+      document.getElementById("countScreen").style.display="none";
+      document.getElementById("main").style.display="flex";
+    }
+  },1000);
+}
+
+/* PHOTO SLIDER */
+let photos=["photo1.jpg","photo2.jpg","photo3.jpg","photo4.jpg"];
+let i=0;
+setInterval(()=>{
+  let img=document.getElementById("photo");
+  img.style.opacity=0;
+  setTimeout(()=>{
+    i=(i+1)%photos.length;
+    img.src=photos[i];
+    img.style.opacity=1;
+  },500);
+},3000);
+
+/* BIRTHDAY MESSAGE */
+let text=`Wishing you a very happy and joyful birthday 🎂💗
+
+May your life always be filled with happiness, love, and success.
+May all your dreams and wishes come true.
+
+It’s not just your birthday… it’s the day someone special like you came into this world and made my life better in many ways.
+
+You’ve become someone really special to me.
+Stay the same, my favourite Angry Bird 🐦❤️
+
+Once again, happy birthday to my special person 💗✨`;
+
+let j=0;
+function startStory(){
+  let box=document.getElementById("msg");
+  let t=setInterval(()=>{
+    box.innerHTML+=text.charAt(j);
+    j++;
+    if(j>=text.length){
+      clearInterval(t);
+      setTimeout(()=>{
+        document.getElementById("main").style.display="none";
+        document.getElementById("proposal").style.display="flex";
+        typeProposal();
+      },3000);
+    }
+  },40);
+}
+
+/* PROPOSAL */
+let proposalText=`I never planned this...
+But you became someone special to me.
+
+Your presence matters more than you know 💖`;
+
+let p=0;
+function typeProposal(){
+  let box=document.getElementById("proposalText");
+  let t=setInterval(()=>{
+    box.innerHTML+=proposalText.charAt(p);
+    p++;
+    if(p>=proposalText.length){
+      clearInterval(t);
+    }
+  },50);
+}
+
+/* FINAL */
+function goFinal(){
+  document.getElementById("proposal").style.display="none";
+  document.getElementById("final").style.display="flex";
+  typeFinal();
+}
+
+let finalText=`No matter what...
+You will always be special to me 💖`;
+
+let k=0;
+function typeFinal(){
+  let box=document.getElementById("finalText");
+  let t=setInterval(()=>{
+    box.innerHTML+=finalText.charAt(k);
+    k++;
+    if(k>=finalText.length){
+      clearInterval(t);
+    }
+  },50);
+}
+
+</script>
+
+</body>
+</html>
